@@ -70,36 +70,7 @@ func selectDesktop(usr *sysuser, conf *config) *desktop {
 
 	lastDesktop := getLastDesktop(usr, desktops)
 
-	if conf.autologin && conf.autologinSession != "" {
-		for _, d := range desktops {
-			if strings.HasSuffix(d.exec, conf.autologinSession) {
-				if isLastDesktopForSave(usr, desktops[lastDesktop], d) {
-					setUserLastSession(usr, d)
-				}
-				return d
-			}
-		}
-	}
-
-	for true {
-		fmt.Printf("\n")
-		for i, v := range desktops {
-			if i > 0 {
-				if conf.verticalSelection {
-					fmt.Print("\n")
-				} else {
-					fmt.Print(", ")
-				}
-			}
-			fmt.Printf("[%d] %s", i, v.name)
-		}
-		fmt.Printf("\nSelect [%d]: ", lastDesktop)
-
-		selection, _ := bufio.NewReader(os.Stdin).ReadString('\n')
-		selection = strings.TrimSpace(selection)
-		if selection == "" {
-			selection = strconv.Itoa(lastDesktop)
-		}
+		selection = strconv.Itoa(lastDesktop)
 
 		id, err := strconv.ParseUint(selection, 10, 32)
 		if err != nil {
