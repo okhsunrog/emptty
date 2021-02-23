@@ -1,7 +1,6 @@
 package src
 
 import (
-	"bufio"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -69,21 +68,16 @@ func selectDesktop(usr *sysuser, conf *config) *desktop {
 	}
 
 	lastDesktop := getLastDesktop(usr, desktops)
-
-		selection = strconv.Itoa(lastDesktop)
-
-		id, err := strconv.ParseUint(selection, 10, 32)
-		if err != nil {
-			continue
-		}
-		if int(id) < len(desktops) {
+    
+  selection := strconv.Itoa(lastDesktop)
+    
+		id, _ := strconv.ParseUint(selection, 10, 32)
+		
 			d := desktops[id]
 			if isLastDesktopForSave(usr, desktops[lastDesktop], d) {
 				setUserLastSession(usr, d)
 			}
 			return d
-		}
-	}
 	return nil
 }
 
